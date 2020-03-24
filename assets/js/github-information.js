@@ -16,10 +16,10 @@ function userInformationHTML(user) {
     `
 }
 function repoInformationHTML(repos) {
-    if (repos.length === 0) {
-        return `<div class="clearfix repo-list">No Repos!</div>`;
+    if (repos.length == 0) {
+        return `<div class="clearfix repo-list">No repos!</div>`;
     }
-    let listItemHTML = repos.map(function(repos){
+    let listItemsHTML = repos.map(function(repo){
         return `<li>
             <a href="${repo.html_url}" target="_blank">${repo.name}</a>
                 </li>`;
@@ -36,6 +36,9 @@ function repoInformationHTML(repos) {
 }
 
 function fetchGitHubInformation(event) {
+    $("#gh-user-data").html("");
+    $("#gh-repo-data").html("");
+
     let username = $("#gh-username").val();
     if (!username) {
         $("#gh-user-data").html(`<h2>Please enter a GitHub username</h2>`);
@@ -52,7 +55,7 @@ function fetchGitHubInformation(event) {
     ).then (
         function(firstResponse, secondResponse) {
             let userData = firstResponse[0];
-            let repoData = secondResponse;[0]
+            let repoData = secondResponse[0];
             $("#gh-user-data").html(userInformationHTML(userData));
             $("#gh-repo-data").html(repoInformationHTML(repoData));
         }, 
@@ -65,3 +68,5 @@ function fetchGitHubInformation(event) {
                 }  
         });
 }       
+
+$(document).ready(fetchGitHubInformation);
